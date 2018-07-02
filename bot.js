@@ -1,8 +1,6 @@
 const Discord = require('discord.js');
 const config = require('./config.json');
 const version = require('./package.json').version;
-const request = require("snekfetch");
-
 let mode = "On";  
 let booster = "Off";
 let PRIO_STRING = "";
@@ -298,4 +296,4 @@ else if(message.content.startsWith(process.env.PREFIX))
   }
 });    
 
-bot.login(process.env.BOT_TOKEN);
+//bot.login(process.env.BOT_TOKEN);
