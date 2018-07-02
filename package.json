@@ -1,6 +1,6 @@
 {
   "name": "team-rocket",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Gotta catch 'em all!",
   "main": "bot.js",
   "scripts": {

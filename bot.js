@@ -68,12 +68,13 @@ function spamtime(bot){
 }
 
 function sendStatus(channel){
+  let my_date = new Date().toString();
   var my_embed = new Discord.RichEmbed()
   .setTitle("Daycare Configuration:")
   .setColor("#22dd22")
   .addField("Mode",mode)
   .addField("Boost",booster)
-  .setFooter(new Date().toString()/*.substring(0,message.createdAt.toString().indexOf('+'))*/);
+  .setFooter(my_date.substring(0,my_date.indexOf('+')));
   channel.send(my_embed);
 }
 
@@ -100,7 +101,7 @@ bot.channels.get(CONSOLE).send("p!info").then(() => {
             else 
                 msg.embeds.forEach((embed) => {
                 if(embed.title && embed.title.startsWith("Level 100")){
-                  setTimeout(bot.channels.get(CONSOLE).send("p!n"),3000);
+                  setTimeout(function(){bot.channels.get(CONSOLE).send("p!n")},3000);
                 }
                 else
                 nextPokemon(bot);
@@ -110,8 +111,8 @@ bot.channels.get(CONSOLE).send("p!info").then(() => {
         .catch(() => {
             nextPokemon(bot);
         });
-});
-    }
+    });
+  }
 }
 
 //logging function
@@ -252,6 +253,7 @@ bot.on("message", function(message) {
     {
     
       //level up
+      //if(message.embeds[0] && message.embeds[0].title && message.embeds[0].title.indexOf(bot.user.username)!=-1 && message.embeds[0].description && message.embeds[0].description.indexOf("evolving!")!=-1)
       if(message.content.match(/\b100!```/) && message.content.indexOf(bot.user.username) != -1)
       {
         if(PRIO_STRING == ""){
