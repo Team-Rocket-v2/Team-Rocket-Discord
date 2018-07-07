@@ -252,7 +252,7 @@ bot.on("message", function(message) {
     
       //level up
       //if(message.embeds[0] && message.embeds[0].title && message.embeds[0].title.indexOf(bot.user.username)!=-1 && message.embeds[0].description && message.embeds[0].description.indexOf("evolving!")!=-1)
-      if(message.content.match(/\b100!```/) && message.content.indexOf(bot.user.username) != -1)
+      if(message.embeds[0] && message.embeds[0].title && message.embeds[0].title.indexOf(bot.username)!= -1 && message.embeds[0].description && message.embeds[0].description.match(/\b100!```/))
       {
         if(PRIO_STRING == ""){
           nextPokemon(bot);
