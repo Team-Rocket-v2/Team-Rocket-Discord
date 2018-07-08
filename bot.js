@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const config = require('./config.json');
 const version = require('./package.json').version;
+
 let mode = "On";  
 let booster = "Off";
 let PRIO_STRING = "";
@@ -116,11 +117,12 @@ bot.channels.get(CONSOLE).send("p!info").then(() => {
 //logging function
 function logEnter(logdata, bool)
 {
+  let logauth = logdata.author || bot.users.get(config.POKECORD_ID);
     if(bool)
     bot.channels.get(CATCH_LOG).send(logdata);
     else
     {
-    logEntry(COMMAND_LOG,logdata.author.username,logdata.author.avatarURL,logdata.content);
+    logEntry(COMMAND_LOG,logauth.username,logauth.avatarURL,logdata.content==null?logdata:logdata.content);
     }
 }
 
@@ -132,7 +134,7 @@ function logEntry(channel_id,auth_un,auth_url,content){
       webhook => utilizeHook(webhook,auth_un,auth_url,content)
       )
       .catch(
-        er => console.error(er)
+        er => console.log(er)
       );
   }
 
@@ -142,7 +144,7 @@ async function utilizeHook(webhook,auth_un,auth_url,content){
         webhook.send(content)
       )
       .catch(
-        err => console.error(err)
+        err => console.log(err)
       );
     webhook.delete();
   }
@@ -161,7 +163,7 @@ bot.on("ready", function() {
 
 //error listener
 bot.on("error", function(err) {
-    console.error(err);
+    console.log(err);
 });
 
 //When a message is received
@@ -248,11 +250,10 @@ bot.on("message", function(message) {
     
     //When a New pokemon appears or a pokemon levels up
     else if(message.author.id == config.POKECORD_ID)
-    {
-    
+    {   
       //level up
       //if(message.embeds[0] && message.embeds[0].title && message.embeds[0].title.indexOf(bot.user.username)!=-1 && message.embeds[0].description && message.embeds[0].description.indexOf("evolving!")!=-1)
-      if(message.embeds[0] && message.embeds[0].title && message.embeds[0].title.indexOf(bot.username)!= -1 && message.embeds[0].description && message.embeds[0].description.match(/\b100!```/))
+      if(message.embeds[0] && message.embeds[0].title && message.embeds[0].title.indexOf(bot.user.username)!= -1 && message.embeds[0].description && message.embeds[0].description.indexOf(" is now level 100!")!=-1)
       {
         if(PRIO_STRING == ""){
           nextPokemon(bot);
@@ -265,10 +266,15 @@ bot.on("message", function(message) {
           }
         try
         {
-        logEnter(message, false);
+        logEnter(
+          new Discord.RichEmbed()
+          .setTitle(message.embeds[0].title)
+          .setDescription(message.embeds[0].description)
+          .setColor(message.embeds[0].color)
+          , false);
         }
         catch(w){
-          console.error(w);
+          console.log(w);
         }
       }
 }
