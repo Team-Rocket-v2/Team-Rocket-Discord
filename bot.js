@@ -22,19 +22,6 @@ let COMMAND_LOG = CONFIG_DATA[1];
 let AGENT_ID = CONFIG_DATA[2].split(",");
 let SPAM_CHANNEL = CONFIG_DATA[3].split(",");
 
-var playmsg_on = null;
-var playmsg_off = null;
-if(process.env.PLAY_MESSAGES)
-{
-  playmsg_on = process.env.PLAY_MESSAGES.split(",")[0];
-  playmsg_off = process.env.PLAY_MESSAGES.split(",")[1];
-}
-else
-{
-  playmsg_on = "Daycare!";
-  playmsg_off = "Nightcare?";
-}
-
 function deleteMesage(message){
   if(bot.guilds.get(message.guild.id).members.get(bot.user.id).hasPermission("MANAGE_MESSAGES"))
       message.delete();
@@ -152,8 +139,9 @@ async function utilizeHook(webhook,auth_un,auth_url,content){
 const bot = new Discord.Client();
 bot.on("ready", function() {
     console.log('Logged in as '+bot.user.username);
-    bot.user.setActivity(playmsg_on, { type: 'PLAYING' });
     sendStatus(bot.channels.get(CONSOLE));
+    bot.user.setStatus('invisible')
+    .catch(console.log);
 
     //spam
     setInterval(spamtime,1500,bot);
@@ -189,7 +177,6 @@ bot.on("message", function(message) {
     {
       if(mode == "On")
       {
-      bot.user.setActivity(playmsg_off, { type: 'PLAYING' });
       mode = "Off";
       booster = "Off";
       sendStatus(message.channel);
@@ -213,7 +200,6 @@ bot.on("message", function(message) {
       }
       else
       {
-        bot.user.setActivity(playmsg_on, { type: 'PLAYING' });
         mode = "On";
         sendStatus(message.channel);
       }
