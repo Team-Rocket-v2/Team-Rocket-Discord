@@ -192,7 +192,7 @@ bot.on("message", function(message) {
       sendStatus(message.channel);
     }
     
-    else if(message.content.toLowerCase() == process.env.PREFIX+"start")
+    /*else if(message.content.toLowerCase() == process.env.PREFIX+"start")
     {
       if(mode == "On")
       {
@@ -203,7 +203,7 @@ bot.on("message", function(message) {
         mode = "On";
         sendStatus(message.channel);
       }
-    }
+    }*/
     
     else if( mode == "On"){
     
