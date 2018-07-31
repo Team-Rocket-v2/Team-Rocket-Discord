@@ -22,6 +22,8 @@ let COMMAND_LOG = CONFIG_DATA[1];
 let AGENT_ID = CONFIG_DATA[2].split(",");
 let SPAM_CHANNEL = CONFIG_DATA[3].split(",");
 
+let POKEPREFIX = process.env.POKEPREFIX || "p!";
+
 function deleteMesage(message){
   if(bot.guilds.get(message.guild.id).members.get(bot.user.id).hasPermission("MANAGE_MESSAGES"))
       message.delete();
@@ -68,7 +70,7 @@ function sendStatus(channel){
 function spamboost(bot){
 if(booster == "On")
 {
-bot.channels.get(COMMAND_LOG).send("p!buy 3");
+bot.channels.get(COMMAND_LOG).send(POKEPREFIX+"buy 3");
 }
 }
 
@@ -76,7 +78,7 @@ bot.channels.get(COMMAND_LOG).send("p!buy 3");
 function nextPokemon(bot)
 {
     if(mode == "On"){
-bot.channels.get(CONSOLE).send("p!info").then(() => {
+bot.channels.get(CONSOLE).send(POKEPREFIX+"info").then(() => {
     const filter = m => config.POKECORD_ID == m.author.id;
 
     bot.channels.get(CONSOLE).awaitMessages(filter, { time: 10000, maxMatches: 1, errors: ['time'] })
@@ -87,7 +89,7 @@ bot.channels.get(CONSOLE).send("p!info").then(() => {
             else 
                 msg.embeds.forEach((embed) => {
                 if(embed.title && embed.title.startsWith("Level 100")){
-                  setTimeout(function(){bot.channels.get(CONSOLE).send("p!n")},3000);
+                  setTimeout(function(){bot.channels.get(CONSOLE).send(POKEPREFIX+"n")},3000);
                 }
                 else
                 nextPokemon(bot);
@@ -216,7 +218,7 @@ bot.on("message", function(message) {
         else
         {
           message.channel.send("Booster Enabled!");
-          message.channel.send("p!buy 3");
+          message.channel.send(POKEPREFIX+"buy 3");
           booster = "On";
         }
       }
@@ -247,7 +249,7 @@ bot.on("message", function(message) {
         else
           {
             let prio_array = PRIO_STRING.split(" ");
-            bot.channels.get(CONSOLE).send("p!select "+prio_array[0]);
+            bot.channels.get(CONSOLE).send(POKEPREFIX+"select "+prio_array[0]);
             PRIO_STRING = prio_array.slice(1).join(" ");
           }
         try
@@ -280,7 +282,7 @@ else if(message.content.toLowerCase() == process.env.PREFIX+"getprio"){
     
 else if(message.content.startsWith(process.env.PREFIX))
     {
-      message.channel.send("p!"+message.content.substring(process.env.PREFIX.length));
+      message.channel.send(POKEPREFIX+message.content.substring(process.env.PREFIX.length));
       logEnter(message, false);
       deleteMesage(message);
     }
